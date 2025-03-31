@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InovGenix - Clinical Note to ICD Mapping</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap">
+    <style>
+        :root {
+            --primary: #2c73d2;
+            --secondary: #0abab5;
+            --tertiary: #6a3de8;
+            --background: #f7f9fc;
+            --card: #ffffff;
+            --text: #333333;
+            --light-text: #6e7f96;
+            --highlight: #fff8e6;
+            --border: #e0e6ef;
+            --shadow: rgba(0, 27, 92, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--tertiary));
+            color: white;
+            padding: 30px 0;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+        }
+        
+        .header-icon {
+            font-size: 36px;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+        }
+        
+        .header-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .header-text p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        .card {
+            background-color: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 27, 92, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-icon {
+            font-size: 22px;
+            color: var(--primary);
+            background-color: rgba(44, 115, 210, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .card h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary);
+            flex: 1;
+        }
+        
+        .clinical-note {
+            background-color: var(--highlight);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            font-family: 'Source Code Pro', monospace;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 16px;
+            letter-spacing: 0.3px;
+            color: #2d3748;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .mapping-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .mapping-item {
+            background: linear-gradient(to right, white, white), 
+                        linear-gradient(135deg, var(--primary), var(--secondary));
+            background-clip: padding-box, border-box;
+            background-origin: padding-box, border-box;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .mapping-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .mapping-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .entity-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .code-badge {
+            background-color: var(--tertiary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .mapping-detail {
+            margin-bottom: 10px;
+        }
+        
+        .mapping-label {
+            font-size: 13px;
+            color: var(--light-text);
+            margin-bottom: 3px;
+        }
+        
+        .mapping-value {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .context-snippet {
+            background-color: var(--highlight);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 14px;
+        }
+        
+        .match-score {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .score-meter {
+            flex: 1;
+            height: 6px;
+            background-color: #e0e6ef;
+            border-radius: 3px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+        
+        .score-value {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            border-radius: 3px;
+        }
+        
+        .score-text {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--light-text);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            color: var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .workflow-diagram {
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto 0;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .workflow-diagram img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .mapping-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="fas fa-notes-medical"></i>
+                </div>
+                <div class="header-text">
+                    <h1>InovGenix</h1>
+                    <p>Automated medical condition identification and code assignment</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-file-medical-alt"></i>
+                </div>
+                <h2>Clinical Note</h2>
+            </div>
+            <div class="clinical-note">{{ test_text }}</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-code-branch"></i>
+                </div>
+                <h2>ICD Mappings</h2>
+            </div>
+            
+            {% if icd_mappings %}
+            <div class="mapping-grid">
+                {% for mapping in icd_mappings %}
+                <div class="mapping-item">
+                    <div class="mapping-header">
+                        <div class="entity-badge">{{ mapping.entity }}</div>
+                        <div class="code-badge">{{ mapping.icd_code }}</div>
+                    </div>
+                    
+                    <div class="context-snippet">{{ mapping.context_snippet }}</div>
+                    
+                    <div class="mapping-detail">
+                        <div class="mapping-label">Description</div>
+                        <div class="mapping-value">{{ mapping.icd_description }}</div>
+                    </div>
+                    
+                    <div class="match-score">
+                        <span>Match</span>
+                        <div class="score-meter">
+                            <div class="score-value" style="width: {{ mapping.match_score }}%;"></div>
+                        </div>
+                        <span class="score-text">{{ mapping.match_score }}%</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="far fa-folder-open"></i>
+                </div>
+                <p>No mappings found for this clinical note.</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="workflow-diagram">
+            <img src="data:image/png;base64,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
